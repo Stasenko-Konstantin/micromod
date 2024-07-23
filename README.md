@@ -19,3 +19,11 @@ contact me at the above email address!
 
 Cheers,
 Martin
+
+---
+
+### FORK
+
+trying to add implementation for micromod in golang. 
+
+see [readme](micromod-go/README.md)
