@@ -2,6 +2,10 @@ package pattern
 
 import "micromod/internal/note"
 
+const (
+	NumRows = 64
+)
+
 type Pattern struct{}
 
 // todo

@@ -9,8 +9,8 @@ import (
 	"micromod/internal/channel"
 	"micromod/internal/module"
 	"micromod/internal/note"
+	"micromod/internal/pattern"
 	"micromod/internal/player"
-	"micromod/pattern"
 )
 
 type Micromod struct {
