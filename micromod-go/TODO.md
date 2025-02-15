@@ -1,0 +1,14 @@
+- [ ] cmd
+- [ ] micromod:
+  - [x] micromod
+  - [ ] other (see code)
+- [ ] channel
+- [ ] macro
+- [ ] module
+- [ ] note
+- [ ] pattern
+- [ ] player
+- [ ] scale
+- [ ] wavInputStream
+- [ ] compiler:
+  - [ ] ... 

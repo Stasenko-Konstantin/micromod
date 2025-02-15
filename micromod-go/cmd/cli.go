@@ -31,14 +31,11 @@ func main() {
 		)
 	}
 
-	// Module module = new Module( new java.io.FileInputStream( modFile ) );
-	// Player player = new Player( module, interpolation, false );
-	// System.out.println( player.getModuleInfo() );
 	mm := micromod.New(
 		modFile,
 		interpolation, false,
 	)
-	fmt.Println(mm.GetModuleInfo())
+	fmt.Println(mm.ModuleInfo())
 
 	clCh := make(chan struct{})
 	go mm.Run(clCh)

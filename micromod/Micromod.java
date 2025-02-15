@@ -94,41 +94,6 @@ public class Micromod {
 		return duration;
 	}
 
-	/* Seek to approximately the specified sample position.
-	   The actual sample position reached is returned. */
-	public int seek( int samplePos ) {
-		setSequencePos( 0 );
-		int currentPos = 0;
-		int tickLen = calculateTickLen( tempo, sampleRate );
-		while( ( samplePos - currentPos ) >= tickLen ) {
-			for( int idx = 0; idx < channels.length; idx++ )
-				channels[ idx ].updateSampleIdx( tickLen * 2, sampleRate * 2 );
-			currentPos += tickLen;
-			tick();
-			tickLen = calculateTickLen( tempo, sampleRate );
-		}
-		return currentPos;
-	}
-
-	/* Seek to the specified position and row in the sequence. */
-	public void seekSequencePos( int sequencePos, int sequenceRow ) {
-		setSequencePos( 0 );
-		if( sequencePos < 0 || sequencePos >= module.getSequenceLength() )
-			sequencePos = 0;
-		if( sequenceRow >= 64 )
-			sequenceRow = 0;
-		while( seqPos < sequencePos || row < sequenceRow ) {
-			int tickLen = calculateTickLen( tempo, sampleRate );
-			for( int idx = 0; idx < channels.length; idx++ )
-				channels[ idx ].updateSampleIdx( tickLen * 2, sampleRate * 2 );
-			if( tick() ) {
-				// Song end reached.
-				setSequencePos( sequencePos );
-				return;
-			}
-		}
-	}
-
 	/* Generate audio.
 	   The number of samples placed into outputBuf is returned.
 	   The output buffer length must be at least that returned by getMixBufferLength().
@@ -139,11 +104,10 @@ public class Micromod {
 		for( int idx = 0, end = ( tickLen + 65 ) * 4; idx < end; idx++ )
 			outputBuf[ idx ] = 0;
 		// Resample.
-		for( int chanIdx = 0; chanIdx < channels.length; chanIdx++ ) {
-			Channel chan = channels[ chanIdx ];
-			chan.resample( outputBuf, 0, ( tickLen + 65 ) * 2, sampleRate * 2, interpolation );
-			chan.updateSampleIdx( tickLen * 2, sampleRate * 2 );
-		}
+        for (Channel chan : channels) {
+            chan.resample(outputBuf, 0, (tickLen + 65) * 2, sampleRate * 2, interpolation);
+            chan.updateSampleIdx(tickLen * 2, sampleRate * 2);
+        }
 		downsample( outputBuf, tickLen + 64 );
 		volumeRamp( outputBuf, tickLen );
 		tick();
@@ -178,7 +142,7 @@ public class Micromod {
 			tick = speed;
 			row();
 		} else {
-			for( int idx = 0; idx < channels.length; idx++ ) channels[ idx ].tick();
+            for (Channel channel : channels) channel.tick();
 		}
 		return playCount[ seqPos ][ row ] > 1;
 	}
@@ -191,7 +155,7 @@ public class Micromod {
 		if( breakSeqPos >= 0 ) {
 			if( breakSeqPos >= module.getSequenceLength() ) breakSeqPos = nextRow = 0;
 			seqPos = breakSeqPos;
-			for( int idx = 0; idx < channels.length; idx++ ) channels[ idx ].plRow = 0;
+            for (Channel channel : channels) channel.plRow = 0;
 			breakSeqPos = -1;
 		}
 		row = nextRow;
