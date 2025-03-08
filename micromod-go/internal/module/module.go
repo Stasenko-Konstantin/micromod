@@ -24,6 +24,10 @@ func New(modFilepath string) *Module {
 	return &Module{modFilepath: modFilepath}
 }
 
+func (m *Module) NumChannels() int {
+	return m.patterns[0].NumChannels()
+}
+
 // todo
 func (m *Module) ModuleInfo() string {
 	return ""
@@ -46,5 +50,10 @@ func (m *Module) SequenceEntry(seqIdx int) int {
 
 // todo
 func (m *Module) Pattern(patIdx int) *pattern.Pattern {
+	return nil
+}
+
+// todo
+func (m *Module) Instrument(i int) *instrument.Instrument {
 	return nil
 }
